@@ -1,70 +1,48 @@
-\# 📊 Registro Nacional de Peritos Judiciales en Chile
+# 📊 Registro Nacional de Peritos Judiciales en Chile
 
+### Unificación, Normalización y Análisis del Peritaje con Enfoque Antropológico
 
-
-\### Unificación, Normalización y Análisis del Peritaje con Enfoque Antropológico
-
-
-
-> Proyecto de limpieza, estandarización y análisis del registro nacional de peritos judiciales en Chile, con énfasis en la \*\*presencia territorial del peritaje antropológico\*\*.
-
-
+Proyecto de limpieza, estandarización y análisis del registro nacional de peritos judiciales en Chile, con énfasis en la **presencia territorial del peritaje antropológico**.
 
 ---
 
-
-
-\## 🧭 Descripción General
-
-
+## 🧭 Descripción General
 
 Este repositorio contiene el proceso completo de:
 
+* ✅ **Carga de bases originales por Corte de Apelaciones**
 
+* ✅ **Unificación en una base nacional**
 
-\* ✅ \*\*Carga de bases originales por Corte de Apelaciones\*\*
+* ✅ **Normalización de campos críticos (RUN, email, teléfono, textos)**
 
-\* ✅ \*\*Unificación en una base nacional\*\*
+* ✅ **Asignación territorial por región**
 
-\* ✅ \*\*Normalización de campos críticos (RUN, email, teléfono, textos)\*\*
+* ✅ **Análisis estadístico del peritaje antropológico a nivel nacional y regional**
 
-\* ✅ \*\*Asignación territorial por región\*\*
-
-\* ✅ \*\*Análisis estadístico del peritaje antropológico a nivel nacional y regional\*\*
-
-
-
-El proyecto surge ante la \*\*alta heterogeneidad, baja estandarización y presencia de datos sucios\*\* en los registros oficiales, que dificultan análisis serios sobre distribución territorial, especialización profesional y acceso real al peritaje.
-
-
+El proyecto surge ante la **alta heterogeneidad, baja estandarización y presencia de datos sucios** en los registros oficiales, que dificultan análisis serios sobre distribución territorial, especialización profesional y acceso real al peritaje.
 
 ---
 
-
-
-\## 🎯 Objetivo Principal
-
-
-
-Analizar empíricamente la \*\*presencia, distribución y concentración del peritaje antropológico en el sistema judicial chileno\*\*, permitiendo responder preguntas como:
+## 🎯 Objetivo Principal
 
 
 
-\* ¿Cuántos peritos antropológicos existen a nivel nacional?
-
-\* ¿En qué regiones se concentran?
-
-\* ¿Qué cortes dependen más (o menos) de este tipo de peritaje?
-
-\* ¿Existen asimetrías territoriales en el acceso al peritaje cultural?
+Analizar empíricamente la **presencia, distribución y concentración del peritaje antropológico en el sistema judicial chileno**, permitiendo responder preguntas como:
 
 
+
+* ¿Cuántos peritos antropológicos existen a nivel nacional?
+
+* ¿En qué regiones se concentran?
+
+* ¿Qué cortes dependen más (o menos) de este tipo de peritaje?
+
+* ¿Existen asimetrías territoriales en el acceso al peritaje cultural?
 
 ---
 
-
-
-\## 🗂️ Estructura del Proyecto
+## 🗂️ Estructura del Proyecto
 
 
 
@@ -91,24 +69,21 @@ Analizar empíricamente la \*\*presencia, distribución y concentración del per
 ---
 
 
-
-\## 🛠️ Tecnologías Utilizadas
-
-
-
-\* \*\*PostgreSQL\*\* (modelo relacional, limpieza y análisis)
-
-\* \*\*CSV / datos administrativos judiciales\*\*
-
-\* Potencial integración con:
+## 🛠️ Tecnologías Utilizadas
 
 
 
-&nbsp; \* R
+* **PostgreSQL** (modelo relacional, limpieza y análisis)
 
-&nbsp; \* Python
+* **CSV / datos administrativos judiciales**
 
-&nbsp; \* Power BI / Tableau
+* Potencial integración con:
+
+	* R
+
+	* Python
+
+	* Power BI / Tableau
 
 
 
@@ -116,7 +91,7 @@ Analizar empíricamente la \*\*presencia, distribución y concentración del per
 
 
 
-\## 🧼 Tratamiento de Datos Sucios
+## 🧼 Tratamiento de Datos Sucios
 
 
 
@@ -124,15 +99,15 @@ Se identificaron problemas estructurales en los archivos originales:
 
 
 
-\* Saltos de línea internos en campos
+* Saltos de línea internos en campos
 
-\* Delimitadores inconsistentes
+* Delimitadores inconsistentes
 
-\* Encabezados intercalados en los datos
+* Encabezados intercalados en los datos
 
-\* Campos ausentes según corte
+* Campos ausentes según corte
 
-\* Errores de digitación
+* Errores de digitación
 
 
 
@@ -140,11 +115,11 @@ Para los casos críticos (Chillán y Concepción) se aplicó la estrategia de:
 
 
 
-1\. \*\*Importación cruda a tablas RAW\*\*
+1. **Importación cruda a tablas RAW**
 
-2\. \*\*Separación manual por `split\_part()`\*\*
+2. **Separación manual por `split\_part()`**
 
-3\. \*\*Validación y reconstrucción de campos\*\*
+3. **Validación y reconstrucción de campos**
 
 
 
@@ -156,7 +131,7 @@ Este proceso queda completamente documentado en los scripts.
 
 
 
-\## 📐 Normalización Aplicada
+## 📐 Normalización Aplicada
 
 
 
@@ -164,15 +139,15 @@ Se estandarizaron los siguientes campos:
 
 
 
-\* `run` → eliminación de puntos, normalización de guion
+* `run` → eliminación de puntos, normalización de guion
 
-\* `email` → minúsculas + validación por regex
+* `email` → minúsculas + validación por regex
 
-\* `telefono` → normalización a formato Chile `56`
+* `telefono` → normalización a formato Chile `56`
 
-\* `nombre`, `especialidad`, `direccion` → limpieza de espacios, capitalización
+* `nombre`, `especialidad`, `direccion` → limpieza de espacios, capitalización
 
-\* Detección de \*\*duplicados por RUN\*\*
+* Detección de **duplicados por RUN**
 
 
 
@@ -180,11 +155,11 @@ Además, se realizó:
 
 
 
-\* ✅ Asignación regional por corte
+* ✅ Asignación regional por corte
 
-\* ✅ Corrección de 35 casos sin región
+* ✅ Corrección de 35 casos sin región
 
-\* ✅ Normalización del nombre de regiones
+* ✅ Normalización del nombre de regiones
 
 
 
@@ -192,7 +167,7 @@ Además, se realizó:
 
 
 
-\## 📊 Líneas de Análisis Implementadas
+## 📊 Líneas de Análisis Implementadas
 
 
 
@@ -200,39 +175,17 @@ Entre las consultas incluidas se encuentran:
 
 
 
-\* Total nacional de peritos
+* Total nacional de peritos
 
-\* Total nacional de peritos antropológicos
+* Total nacional de peritos antropológicos
 
-\* Porcentaje de antropología dentro del sistema
+* Porcentaje de antropología dentro del sistema
 
-\* Distribución regional del peritaje antropológico
+* Distribución regional del peritaje antropológico
 
-\* Índice de dependencia regional de antropología
+* Índice de dependencia regional de antropología
 
-\* Ranking de cortes con mayor presencia antropológica
-
-
-
----
-
-
-
-\## 🧠 Enfoque Teórico
-
-
-
-Este proyecto se inscribe en una línea de análisis \*\*crítico del funcionamiento institucional del peritaje\*\*, abordando:
-
-
-
-\* Desigualdad territorial en acceso a peritajes especializados
-
-\* Centralización técnico-profesional
-
-\* Invisibilización estadística por problemas administrativos
-
-\* Brecha entre demanda judicial intercultural y oferta real de expertos
+* Ranking de cortes con mayor presencia antropológica
 
 
 
@@ -240,7 +193,29 @@ Este proyecto se inscribe en una línea de análisis \*\*crítico del funcionami
 
 
 
-\## 📄 Estado del Proyecto
+## 🧠 Enfoque Teórico
+
+
+
+Este proyecto se inscribe en una línea de análisis **crítico del funcionamiento institucional del peritaje**, abordando:
+
+
+
+* Desigualdad territorial en acceso a peritajes especializados
+
+* Centralización técnico-profesional
+
+* Invisibilización estadística por problemas administrativos
+
+* Brecha entre demanda judicial intercultural y oferta real de expertos
+
+
+
+---
+
+
+
+## 📄 Estado del Proyecto
 
 
 
@@ -260,7 +235,7 @@ Este proyecto se inscribe en una línea de análisis \*\*crítico del funcionami
 
 
 
-\## 🤝 Contribuciones
+## 🤝 Contribuciones
 
 
 
@@ -268,13 +243,13 @@ Este repositorio está abierto a:
 
 
 
-\* Antropólogos/as
+* Antropólogos/as
 
-\* Investigadores/as judiciales
+* Investigadores/as judiciales
 
-\* Científicos/as de datos
+* Científicos/as de datos
 
-\* Estudiantes de derecho, sociología, criminología
+* Estudiantes de derecho, sociología, criminología
 
 
 
@@ -286,13 +261,13 @@ Pull requests, mejoras metodológicas y nuevas visualizaciones son bienvenidas.
 
 
 
-\## ⚖️ Advertencia de Uso
+## ⚖️ Advertencia de Uso
 
 
 
-Los datos provienen de \*\*registros administrativos públicos\*\*, cuya calidad es responsabilidad de los organismos que los producen.
+Los datos provienen de **registros administrativos públicos**, cuya calidad es responsabilidad de los organismos que los producen.
 
-Este proyecto \*\*no altera información sustantiva\*\*, solo la reorganiza, limpia y analiza.
+Este proyecto **no altera información sustantiva**, solo la reorganiza, limpia y analiza.
 
 
 
@@ -300,25 +275,25 @@ Este proyecto \*\*no altera información sustantiva\*\*, solo la reorganiza, lim
 
 
 
-\## 🔒 Disclaimer de Protección de Datos Personales
+## 🔒 Disclaimer de Protección de Datos Personales
 
 
 
-Por razones \*\*éticas, legales y de resguardo de la privacidad\*\*, las \*\*tablas con datos individuales de peritos NO serán publicadas en este repositorio\*\*, ni en forma completa ni parcial.
+Por razones **éticas, legales y de resguardo de la privacidad**, las **tablas con datos individuales de peritos NO serán publicadas en este repositorio**, ni en forma completa ni parcial.
 
 
 
-Aunque los registros provienen de \*\*fuentes administrativas públicas\*\*, este proyecto se rige por los siguientes principios:
+Aunque los registros provienen de **fuentes administrativas públicas**, este proyecto se rige por los siguientes principios:
 
 
 
-\* ✅ \*\*Protección de la identidad personal\*\*
+* ✅ **Protección de la identidad personal**
 
-\* ✅ \*\*No exposición de datos sensibles\*\*
+* ✅ **No exposición de datos sensibles**
 
-\* ✅ \*\*Uso exclusivo con fines analíticos y académicos\*\*
+* ✅ **Uso exclusivo con fines analíticos y académicos**
 
-\* ✅ \*\*Cumplimiento de la Ley N° 19.628 sobre Protección de la Vida Privada (Chile)\*\*
+* ✅ **Cumplimiento de la Ley N° 19.628 sobre Protección de la Vida Privada (Chile)**
 
 
 
@@ -326,35 +301,35 @@ En consecuencia:
 
 
 
-\* Este repositorio \*\*solo publica\*\*:
+* Este repositorio **solo publica**:
 
 
 
-&nbsp; \* Scripts de creación de tablas
+* Scripts de creación de tablas
 
-&nbsp; \* Procesos de limpieza y normalización
+* Procesos de limpieza y normalización
 
-&nbsp; \* Consultas estadísticas
+* Consultas estadísticas
 
-&nbsp; \* Resultados agregados y anonimizados
+* Resultados agregados y anonimizados
 
-\* \*\*No se incluye\*\* ningún archivo con:
-
-
-
-&nbsp; \* Nombres
-
-&nbsp; \* RUN
-
-&nbsp; \* Direcciones
-
-&nbsp; \* Teléfonos
-
-&nbsp; \* Correos electrónicos
+* **No se incluye** ningún archivo con:
 
 
 
-Los análisis presentados se construyen \*\*exclusivamente sobre datos ya anonimizados o agregados\*\*, impidiendo la identificación directa o indirecta de personas.
+* Nombres
+
+* RUN
+
+* Direcciones
+
+* Teléfonos
+
+* Correos electrónicos
+
+
+
+Los análisis presentados se construyen **exclusivamente sobre datos ya anonimizados o agregados**, impidiendo la identificación directa o indirecta de personas.
 
 
 
@@ -362,11 +337,11 @@ Los análisis presentados se construyen \*\*exclusivamente sobre datos ya anonim
 
 
 
-\## ✍️ Autor
+## ✍️ Autor
 
 
 
-\*\*Teddy Brooks Caroca\*\*
+**Teddy Brooks Caroca**
 
 Antropólogo socio-cultural, Analista de datos etnográficos.
 
