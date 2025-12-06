@@ -305,27 +305,27 @@ En consecuencia:
 
 
 
-* Scripts de creación de tablas
+	* Scripts de creación de tablas
 
-* Procesos de limpieza y normalización
+	* Procesos de limpieza y normalización
 
-* Consultas estadísticas
+	* Consultas estadísticas
 
-* Resultados agregados y anonimizados
+	* Resultados agregados y anonimizados
 
-* **No se incluye** ningún archivo con:
+	* **No se incluye** ningún archivo con:
 
 
 
-* Nombres
+		* Nombres
 
-* RUN
+		* RUN
 
-* Direcciones
+		* Direcciones
 
-* Teléfonos
+		* Teléfonos
 
-* Correos electrónicos
+		* Correos electrónicos
 
 
 
