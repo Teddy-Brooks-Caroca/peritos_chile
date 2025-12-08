@@ -1,9 +1,11 @@
 -- # E.- TABULACIONES EXTRAS (DIAGNOSTICO)
 
 -- 1. Especificiar los NULL 
-SELECT corte, region, COUNT(*) AS total
+SELECT corte, region, COUNT(DISTINCT run) AS total
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY corte, region
 ORDER BY region NULLS FIRST;
 
@@ -42,13 +44,15 @@ WHERE especialidad ILIKE '%antropolog%'
 -- 4. Estadística limpia
 SELECT
   region,
-  COUNT(*) AS total_antropologos
+  COUNT(DISTINCT run) AS total_antropologos
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY region
 ORDER BY total_antropologos DESC;
 
 -- Este paso adicional se realizó por la existencia de NULL en las regiones; una vez corregidos, no debería
--- afectar en las estadísticas previas.
+-- afectar en las estadísticas previas. 
 
 -- ######################################### FIN SCRIPT ######################################################

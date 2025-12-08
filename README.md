@@ -40,31 +40,6 @@ Analizar empíricamente la **presencia, distribución y concentración del perit
 
 * ¿Existen asimetrías territoriales en el acceso al peritaje cultural?
 
----
-
-## 🗂️ Estructura del Proyecto
-
-
-
-```text
-
-/
-
-├── sql/
-
-│   ├── 01\_carga\_de\_tablas.sql
-
-│   ├── 02\_unificacion\_de\_la\_informacion.sql
-
-│   ├── 03\_normalizacion\_de\_la\_informacion.sql
-
-│   ├── 04\_estadisticas\_de\_informacion.sql
-
-│   ├── 05\_acciones\_extras.sql
-
-```
-
-
 
 ---
 

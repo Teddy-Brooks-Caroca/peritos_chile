@@ -552,55 +552,101 @@ SELECT * FROM peritos_nacional;
 -- 1. Estadísticas nacionales generales
 
 -- 1.1 Total nacional de peritos
-SELECT COUNT(*) AS total_peritos_nacional
-FROM peritos_nacional_limpia;
+
+SELECT COUNT(DISTINCT run) AS total_peritos_nacional
+FROM peritos_nacional_limpia
+WHERE run IS NOT NULL;
 
 -- 1.2 Total de peritos por corte
-SELECT corte, COUNT(*) AS total_peritos
+SELECT corte, COUNT(DISTINCT run) AS total_peritos
 FROM peritos_nacional_limpia
+WHERE run IS NOT NULL
 GROUP BY corte
 ORDER BY total_peritos DESC;
 
 -- 1.3 Total de peritos por especialidad
-SELECT especialidad, COUNT(*) AS total
+SELECT especialidad, COUNT(DISTINCT run) AS total
 FROM peritos_nacional_limpia
-WHERE especialidad IS NOT NULL AND especialidad <> ''
+WHERE especialidad IS NOT NULL 
+  AND especialidad <> ''
+  AND run IS NOT NULL
 GROUP BY especialidad
 ORDER BY total DESC;
 
 -- 2. Enfoque exclusivo en peritos antropológicos
 
 -- 2.1 Total nacional de peritos antropólogos
-SELECT COUNT(*) AS total_antropologos
+SELECT COUNT(DISTINCT run) AS total_antropologos
 FROM peritos_nacional_limpia
-WHERE
-  especialidad ILIKE '%antropolog%';
+WHERE 
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%';
   
 -- 2.2 Peritos antropológicos por corte
-SELECT corte, COUNT(*) AS total_antropologos
+SELECT corte, COUNT(DISTINCT run) AS total_antropologos
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY corte
 ORDER BY total_antropologos DESC;
 
 -- 2.3 Proporción de antropólogos dentro de cada corte
 SELECT
   corte,
-  COUNT(*) FILTER (WHERE especialidad ILIKE '%antropolog%') AS antropologos,
-  COUNT(*) AS total_peritos,
+  COUNT(DISTINCT run) FILTER (
+    WHERE especialidad ILIKE '%antropolog%' 
+       OR titulo_profesional ILIKE '%antropolog%'
+  ) AS antropologos,
+  COUNT(DISTINCT run) AS total_peritos,
   ROUND(
-    COUNT(*) FILTER (WHERE especialidad ILIKE '%antropolog%') * 100.0 / COUNT(*),
+    COUNT(DISTINCT run) FILTER (
+      WHERE especialidad ILIKE '%antropolog%' 
+         OR titulo_profesional ILIKE '%antropolog%'
+    ) * 100.0 
+    / COUNT(DISTINCT run),
     2
   ) AS porcentaje_antropologos
 FROM peritos_nacional_limpia
+WHERE run IS NOT NULL
 GROUP BY corte
 ORDER BY porcentaje_antropologos DESC;
+
+-- 2.4 Peritos repetidos en mas de un a corte
+SELECT 
+  run,
+  nombre,
+  COUNT(DISTINCT corte) AS cantidad_cortes,
+  STRING_AGG(DISTINCT corte, ' | ') AS cortes_en_que_aparece
+FROM peritos_nacional_limpia
+WHERE
+  (
+    especialidad ILIKE '%antropolog%'
+     OR titulo_profesional ILIKE '%antropolog%'
+  )
+  AND run IS NOT NULL
+GROUP BY run, nombre
+HAVING COUNT(DISTINCT corte) > 1
+ORDER BY cantidad_cortes DESC;
+
+-- 2.5 Repetidos por conteo
+SELECT COUNT(*) AS total_antropologos_repetidos
+FROM (
+  SELECT run
+  FROM peritos_nacional_limpia
+  WHERE
+    especialidad ILIKE '%antropolog%'
+     OR titulo_profesional ILIKE '%antropolog%'
+  GROUP BY run
+  HAVING COUNT(DISTINCT corte) > 1
+) t;
 
 -- 3. Comparación con las especialidades dominantes
 
 -- 3.1 Ranking nacional de especialidades
-SELECT especialidad, COUNT(*) AS total
+SELECT especialidad, COUNT(DISTINCT run) AS total
 FROM peritos_nacional_limpia
+WHERE especialidad IS NOT NULL
 GROUP BY especialidad
 ORDER BY total DESC
 LIMIT 10;
@@ -610,9 +656,10 @@ SELECT *
 FROM (
   SELECT
     especialidad,
-    COUNT(*) AS total,
-    RANK() OVER (ORDER BY COUNT(*) DESC) AS ranking
+    COUNT(DISTINCT run) AS total,
+    RANK() OVER (ORDER BY COUNT(DISTINCT run) DESC) AS ranking
   FROM peritos_nacional_limpia
+  WHERE especialidad IS NOT NULL
   GROUP BY especialidad
 ) t
 WHERE especialidad ILIKE '%antropolog%';
@@ -644,22 +691,32 @@ SET region = CASE
 END;
 
 -- 4.2 Antropólogos por región
-SELECT region, COUNT(*) AS total_antropologos
+SELECT region, COUNT(DISTINCT run) AS total_antropologos
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY region
 ORDER BY total_antropologos DESC;
 
 -- 4.3 Proporción regional de antropólogos
 SELECT
   region,
-  COUNT(*) FILTER (WHERE especialidad ILIKE '%antropolog%') AS antropologos,
-  COUNT(*) AS total_peritos,
+  COUNT(DISTINCT run) FILTER (
+    WHERE especialidad ILIKE '%antropolog%' 
+       OR titulo_profesional ILIKE '%antropolog%'
+  ) AS antropologos,
+  COUNT(DISTINCT run) AS total_peritos,
   ROUND(
-    COUNT(*) FILTER (WHERE especialidad ILIKE '%antropolog%') * 100.0 / COUNT(*),
+    COUNT(DISTINCT run) FILTER (
+      WHERE especialidad ILIKE '%antropolog%' 
+         OR titulo_profesional ILIKE '%antropolog%'
+    ) * 100.0 
+    / COUNT(DISTINCT run),
     2
   ) AS porcentaje_antropologos
 FROM peritos_nacional_limpia
+WHERE run IS NOT NULL
 GROUP BY region
 ORDER BY porcentaje_antropologos DESC;
 
@@ -668,9 +725,11 @@ ORDER BY porcentaje_antropologos DESC;
 -- # E.- TABULACIONES EXTRAS (DIAGNOSTICO)
 
 -- 1. Especificiar los NULL 
-SELECT corte, region, COUNT(*) AS total
+SELECT corte, region, COUNT(DISTINCT run) AS total
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY corte, region
 ORDER BY region NULLS FIRST;
 
@@ -709,14 +768,16 @@ WHERE especialidad ILIKE '%antropolog%'
 -- 4. Estadística limpia
 SELECT
   region,
-  COUNT(*) AS total_antropologos
+  COUNT(DISTINCT run) AS total_antropologos
 FROM peritos_nacional_limpia
-WHERE especialidad ILIKE '%antropolog%'
+WHERE
+  especialidad ILIKE '%antropolog%'
+   OR titulo_profesional ILIKE '%antropolog%'
 GROUP BY region
 ORDER BY total_antropologos DESC;
 
 -- Este paso adicional se realizó por la existencia de NULL en las regiones; una vez corregidos, no debería
--- afectar en las estadísticas previas.
+-- afectar en las estadísticas previas. 
 
 -- ######################################### FIN SCRIPT ######################################################
 
